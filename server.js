@@ -20,7 +20,7 @@ const env = () => new Promise(resolve => {
 
 	if (fs.existsSync(".env")) {
 		let env = {};
-		let pairs = fs.readFileSync(".env").toString().split(/\n\r?/g).map(line => line.split("=").map(item => item.trim()));
+		let pairs = fs.readFileSync(".env").toString().split(/\n\r?/g).map(line => line.split("=", 1).map(item => item.trim()));
 
 		for (let pair of pairs) {
 			let [key, value] = pair;
