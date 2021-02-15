@@ -1,0 +1,168 @@
+:root {
+	--background: #fff;
+	--text-main: #000;
+	--text-link: dodgerblue;
+}
+
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #3b3b3b;
+		--text-main: #ddd;
+		--text-link: dodgerblue;
+	}
+}
+
+body {
+	font-family: helvetica, sans-serif;
+	margin: 64px;
+	background-color: var(--background);
+	color: var(--text-main);
+}
+
+br {
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	height: 24px;
+	display: block;
+	content: "";
+}
+
+.projects {
+	list-style: none;
+}
+
+.projects li {
+	padding: 4px 0;
+}
+
+.projects .wrapper {
+	display: inline-block;
+	margin-right: auto;
+}
+
+.projects li span {
+	position: relative;
+	cursor: default;
+	background-color: var(--background);
+	z-index: 1;
+}
+
+@media screen and (orientation: portrait) {
+	body {
+		margin: 48px;
+	}
+
+	.projects li span {
+		display: block;
+		margin-bottom: 8px;
+	}
+
+	.projects a {
+		margin-bottom: 8px;
+		display: block;
+	}
+}
+
+@media (prefers-reduced-motion: no-preference) and (orientation: landscape) {
+	.projects li span::after {
+		content: "";
+		display: block;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		height: 1px;
+		width: 100%;
+		transition: width .2s;
+		background-color: var(--text-main);
+	}
+
+	.projects .wrapper:hover span::after, .projects .wrapper:focus-within span::after {
+		width: 0%;
+	}
+
+	.projects a::after {
+		transform: translateX(-100%);
+		opacity: 0;
+		transition: opacity .2s, transform .2s;
+	}
+
+	.projects .wrapper:hover a::after, .projects .wrapper:focus-within a::after {
+		transform: translateX(0%);
+		opacity: 1;
+	}
+}
+
+.projects a {
+	margin-left: 8px;
+}
+
+.projects a::after {
+	display: inline-block;
+	text-decoration: underline;
+	color: var(--text-link);
+}
+
+.projects a.link::after {
+	content: "Take a look!";
+}
+
+.projects a.github::after {
+	content: "View on GitHub!";
+}
+
+#links {
+	display: flex;
+	height: 1.5em;
+}
+
+#links a {
+	color: var(--text-main);
+	transition: color .1s;
+	line-height: 1.5em;
+	height: 1.5em;
+	display: inline-flex;
+	text-decoration: none;
+	position: relative;
+}
+
+#links span {
+	display: inline-block;
+	width: 1px;
+	height: 100%;
+	margin: 0 12px;
+	background-color: var(--text-main);
+}
+
+#links a:hover {
+	color: var(--text-link);
+}
+
+#links a:hover i {
+	background-color: var(--text-link);
+}
+
+#links a i {
+	display: inline-block;
+	height: 1.3em;
+	width: 1.3em;
+	margin: 0.1em 0;
+	margin-right: 8px;
+	mask-size: contain;
+	mask-repeat: no-repeat;
+	-webkit-mask-size: contain;
+	-webkit-mask-repeat: no-repeat;
+	background-color: var(--text-main);
+	transition: background-color .1s;
+}
+
+#links a i.github {
+	mask-image: url(/assets/github-brands.svg);
+	-webkit-mask-image: url(/assets/github-brands.svg);
+}
+
+#links a i.prisma {
+	mask-image: url(/assets/prisma.svg);
+	-webkit-mask-image: url(/assets/prisma.svg);
+}

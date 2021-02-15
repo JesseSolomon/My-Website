@@ -1,0 +1,12 @@
+{
+	"name": "my-website",
+	"homepage": "jessesolomon.dev",
+	"dependencies": {
+		"express": "^4.17.1",
+		"mysql": "^2.18.1",
+		"node-html-parser": "^2.1.0"
+	},
+	"scripts": {
+		"start": "node server.js"
+	}
+}
