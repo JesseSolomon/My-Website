@@ -78,7 +78,7 @@ const db = (env) => new Promise(resolve => {
 			Promise.all([
 				new Promise((resolve, reject) => db.query(`create table if not exists sections (id int not null auto_increment, title varchar(128), primary key(id))`, err => err ? reject(err) : resolve())),
 				new Promise((resolve, reject) => db.query(`create table if not exists projects (id int not null auto_increment, section int not null, title varchar(128), url varchar(64), repo varchar(256), primary key(id))`, err => err ? reject(err) : resolve())),
-				new Promise((resolve, reject) => db.query(`create table if not exists analytics (hash varchar(256) not null, url varchar(128))`, err => err ? reject(err) : resolve()))
+				new Promise((resolve, reject) => db.query(`create table if not exists analytics (host varchar(64) not null, views int not null)`, err => err ? reject(err) : resolve()))
 			])
 			.then(() => resolve(db));
 		});
@@ -93,7 +93,7 @@ const serve = (env, db) =>  {
 		let domain = req.hostname.split(".")[0];
 
 		if (req.ip !== "::1") {
-			db.query(`insert ignore into analytics (hash, url) values (${db.escape(req.ip + "@" + req.hostname + req.path)}, ${db.escape(req.hostname + req.path)})`);
+			db.query(`insert into analytics (host, views) values (${db.escape(req.hostname)}, 1}) ON DUPLICATE KEY UPDATE views = views + 1`);
 		}
 
 		// Handle serving static files & rendering the home page
