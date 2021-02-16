@@ -157,8 +157,11 @@ const serve = (env, db) =>  {
 	});
 
 	// If SSL config exists, start the server as HTTPS
-	if ("key" in env && "cert" in env) {
-		https.createServer(app).listen(443);
+	if ("ssh_key" in env && "ssh_cert" in env) {
+		https.createServer({
+			cert: fs.readFileSync(env.ssh_cert).toString(),
+			key: fs.readFileSync(env.ssh_key).toString();
+		}, app).listen(443);
 
 		http.createServer((_req, res) => {
 			res.statusCode = 301;
