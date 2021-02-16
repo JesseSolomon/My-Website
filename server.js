@@ -93,7 +93,7 @@ const serve = (env, db) =>  {
 		let domain = req.hostname.split(".")[0];
 
 		if (req.ip !== "::1") {
-			db.query(`insert into analytics (host, views) values (${db.escape(req.hostname)}, 1}) ON DUPLICATE KEY UPDATE views = views + 1`);
+			db.query(`insert into analytics (host, views) values (${db.escape(req.hostname)}, 1) ON DUPLICATE KEY UPDATE views = views + 1`);
 		}
 
 		// Handle serving static files & rendering the home page
