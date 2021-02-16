@@ -78,7 +78,7 @@ const db = (env) => new Promise(resolve => {
 			Promise.all([
 				new Promise((resolve, reject) => db.query(`create table if not exists sections (id int not null auto_increment, title varchar(128), primary key(id))`, err => err ? reject(err) : resolve())),
 				new Promise((resolve, reject) => db.query(`create table if not exists projects (id int not null auto_increment, section int not null, title varchar(128), url varchar(64), repo varchar(256), primary key(id))`, err => err ? reject(err) : resolve())),
-				new Promise((resolve, reject) => db.query(`create table if not exists analytics (host varchar(64) not null, views int not null)`, err => err ? reject(err) : resolve()))
+				new Promise((resolve, reject) => db.query(`create table if not exists analytics (host varchar(64) not null, views int not null, primary key(host))`, err => err ? reject(err) : resolve()))
 			])
 			.then(() => resolve(db));
 		});
