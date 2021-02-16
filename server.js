@@ -92,10 +92,6 @@ const serve = (env, db) =>  {
 	app.use("/", (req, res, next) => {
 		let domain = req.hostname.split(".")[0];
 
-		if (req.ip !== "::1") {
-			db.query(`insert into analytics (host, views) values (${db.escape(req.hostname)}, 1) ON DUPLICATE KEY UPDATE views = views + 1`);
-		}
-
 		// Handle serving static files & rendering the home page
 		const staticHandler = (dir) => {
 			if (req.path === "/") {
@@ -129,6 +125,10 @@ const serve = (env, db) =>  {
 
 					Promise.all(sectionContent).then(html => {
 						sectionsElement.set_content(html.join("<br/>"));
+
+						if (req.ip !== "::1") {
+							db.query(`insert into analytics (host, views) values (${db.escape(req.hostname)}, 1) ON DUPLICATE KEY UPDATE views = views + 1`);
+						}
 
 						res.type("text/html").send(document.innerHTML);
 					});
