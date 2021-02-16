@@ -77,8 +77,7 @@ const db = (env) => new Promise(resolve => {
 		db.connect(() => {
 			Promise.all([
 				new Promise((resolve, reject) => db.query(`create table if not exists sections (id int not null auto_increment, title varchar(128), primary key(id))`, err => err ? reject(err) : resolve())),
-				new Promise((resolve, reject) => db.query(`create table if not exists projects (id int not null auto_increment, section int not null, title varchar(128), url varchar(64), repo varchar(256), primary key(id))`, err => err ? reject(err) : resolve())),
-				new Promise((resolve, reject) => db.query(`create table if not exists analytics (host varchar(64) not null, views int not null, primary key(host))`, err => err ? reject(err) : resolve()))
+				new Promise((resolve, reject) => db.query(`create table if not exists projects (id int not null auto_increment, section int not null, title varchar(128), url varchar(64), repo varchar(256), primary key(id))`, err => err ? reject(err) : resolve()))
 			])
 			.then(() => resolve(db));
 		});
@@ -125,10 +124,6 @@ const serve = (env, db) =>  {
 
 					Promise.all(sectionContent).then(html => {
 						sectionsElement.set_content(html.join("<br/>"));
-
-						if (req.ip !== "::1") {
-							db.query(`insert into analytics (host, views) values (${db.escape(req.hostname)}, 1) ON DUPLICATE KEY UPDATE views = views + 1`);
-						}
 
 						res.type("text/html").send(document.innerHTML);
 					});
