@@ -160,7 +160,7 @@ const serve = (env, db) =>  {
 	if ("ssh_key" in env && "ssh_cert" in env) {
 		https.createServer({
 			cert: fs.readFileSync(env.ssh_cert).toString(),
-			key: fs.readFileSync(env.ssh_key).toString();
+			key: fs.readFileSync(env.ssh_key).toString()
 		}, app).listen(443);
 
 		http.createServer((_req, res) => {
