@@ -91,10 +91,10 @@ const serve = (env, db) =>  {
 	app.use("/", (req, res, next) => {
 		let domain = req.hostname.split(".")[0];
 
-		// Handle serving static files & rendering the home page
-		const staticHandler = (dir) => {
+		// Serve public directory by default
+		if (domain === "jessesolomon" || domain === "localhost") {
 			if (req.path === "/") {
-				let html = fs.readFileSync(path.join(dir, "index.html")).toString();
+				let html = fs.readFileSync(path.join("public", "index.html")).toString();
 
 				let document = htmlParser.parse(html);
 				let sectionsElement = document.querySelector("#sections");
@@ -130,20 +130,15 @@ const serve = (env, db) =>  {
 				});
 			}
 			else {
-				express.static(dir)(req, res, next);
+				express.static("public")(req, res, next);
 			}
-		}
-
-		// Serve public directory by default
-		if (domain === "jessesolomon" || domain === "localhost") {
-			return staticHandler("public");
 		}
 		// If a subdomain has been specified, attempt to serve it from the apps directory
 		else {
 			let appPath = path.join("apps", domain);
 
 			if (fs.existsSync(appPath)) {
-				return staticHandler(appPath);
+				return express.static(path.join(appPath, "public"))(req, res, next);
 			}
 			else {
 				res.status(404).end();
